@@ -9,14 +9,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cars")
+@RequestMapping("/cars")
 public class CarController {
 
-    private final CarService carService;
+    private CarService carService;
 
     @Autowired
     public CarController(CarService carService){
         this.carService = carService;
+    }
+
+    @PostMapping
+    public Car saveCar(@RequestBody Car car){
+        return carService.addCar(car);
     }
 
     @GetMapping
@@ -38,5 +43,6 @@ public class CarController {
     public Car updateById(@PathVariable("id") long id, @RequestBody CarDto carDto){
         return carService.updateById(id, carDto);
     }
+
 
 }

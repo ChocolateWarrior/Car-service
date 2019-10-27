@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CarService {
@@ -38,14 +39,34 @@ public class CarService {
         return carToUpdate;
     }
 
+    public Car addCar(Car car) {
+        carRepository.save(car);
+        return car;
+    }
+
     private void updateCar(Car carToUpdate, CarDto carDto){
-        carToUpdate.setBrand(carDto.getBrand());
-        carToUpdate.setColor(carDto.getColor());
-        carToUpdate.setDriveLayout(carDto.getDriveLayout());
-        carToUpdate.setTransmission(carDto.getTransmission());
-        carToUpdate.setEngine(carDto.getEngine());
-        carToUpdate.setEngineCapacity(carDto.getEngineCapacity());
-        carToUpdate.setModel(carDto.getModel());
-        carToUpdate.setPrice(carDto.getPrice());
+        if(Objects.nonNull(carDto.getBrand()))
+            carToUpdate.setBrand(carDto.getBrand());
+
+        if(Objects.nonNull(carDto.getColor()))
+            carToUpdate.setColor(carDto.getColor());
+
+        if(Objects.nonNull(carDto.getDriveLayout()))
+            carToUpdate.setDriveLayout(carDto.getDriveLayout());
+
+        if(Objects.nonNull(carDto.getTransmission()))
+            carToUpdate.setTransmission(carDto.getTransmission());
+
+        if(Objects.nonNull(carDto.getEngine()))
+            carToUpdate.setEngine(carDto.getEngine());
+
+        if(Objects.nonNull(carDto.getEngineCapacity()))
+            carToUpdate.setEngineCapacity(carDto.getEngineCapacity());
+
+        if(Objects.nonNull(carDto.getModel()))
+            carToUpdate.setModel(carDto.getModel());
+
+        if(Objects.nonNull(carDto.getPrice()))
+            carToUpdate.setPrice(carDto.getPrice());
     }
 }
