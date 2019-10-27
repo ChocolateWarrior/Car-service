@@ -1,6 +1,7 @@
 package com.components.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -16,8 +17,6 @@ import java.math.BigDecimal;
 public class Car {
 
     @Id
-    @SequenceGenerator(name="seq_car", allocationSize = 0, sequenceName = "sequence_car_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_car")
     @Column(name = "id", nullable = false, unique = true)
     private long id;
 
