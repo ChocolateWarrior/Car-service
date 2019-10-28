@@ -3,16 +3,13 @@ package com.components.controller;
 import com.components.entity.Car;
 import com.components.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/cars")
+@RequestMapping("/supplier1")
 public class CarController {
 
     private final CarService carService;

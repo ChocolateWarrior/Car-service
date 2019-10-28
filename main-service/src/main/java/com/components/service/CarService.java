@@ -5,13 +5,24 @@ import com.components.entity.Car;
 import com.components.exception.CarNotFoundException;
 import com.components.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-import java.util.Objects;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Service
 public class CarService {
+
+    @Value("${url.supplier1}")
+    private String backPrefixForFirstSupplier;
+
+    @Value("${url.supplier2}")
+    private String backPrefixForSecondSupplier;
 
     private CarRepository carRepository;
 
@@ -69,4 +80,50 @@ public class CarService {
         if(Objects.nonNull(carDto.getPrice()))
             carToUpdate.setPrice(carDto.getPrice());
     }
+
+    public Map<Long, BigDecimal> getPriceListFromFirstSupplier(){
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            ResponseEntity<Map<Long, BigDecimal>> answer = restTemplate.exchange(
+                    backPrefixForFirstSupplier +
+                            "/price-list",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<Map<Long, BigDecimal>>() {
+                    });
+            return answer.getBody();
+        } catch (Exception e){}
+
+        return new HashMap<>();
+    }
+
+    public Car getDetailsFromFirstSupplier(long id){
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            ResponseEntity<Car> answer = restTemplate.getForEntity(backPrefixForFirstSupplier +
+                    "/details/" + id, Car.class);
+            return answer.getBody();
+        } catch (Exception e){
+
+        }
+        return new Car();
+    }
+
+    public List<Car> getCarFromSecondSupplier(String query){
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            ResponseEntity<List<Car>> answer = restTemplate.exchange(
+                    backPrefixForSecondSupplier +
+                            "/" + query,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<Car>>() {
+                    });
+            return answer.getBody();
+        } catch (Exception e){
+
+        }
+        return new ArrayList<>();
+    }
+
 }

@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class CarService {
@@ -19,11 +19,10 @@ public class CarService {
         this.carRepository = carRepository;
     }
 
-    //TODO rewrite to Collectors.toMap
     public Map<Long, BigDecimal> getIdAndPrice() {
-        Map<Long, BigDecimal> idPriceMap= new HashMap<>();
-        carRepository.findAll().forEach(e -> idPriceMap.put(e.getId(), e.getPrice()));
-        return idPriceMap;
+        return carRepository.findAll()
+                .stream()
+                .collect(Collectors.toMap(Car::getId, Car::getPrice));
     }
 
     public Car getById(long id) {

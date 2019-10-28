@@ -19,6 +19,6 @@ public class CarService {
     }
 
     public List<Car> getAllProductsByQuery(String query) {
-        return carRepository.findALlByNameOrDescriptionContains(query, query);
+        return carRepository.findAllByBrandOrModelContains(query, query);
     }
 }

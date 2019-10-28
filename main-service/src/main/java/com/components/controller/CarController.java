@@ -6,7 +6,9 @@ import com.components.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/cars")
@@ -44,5 +46,14 @@ public class CarController {
         return carService.updateById(id, carDto);
     }
 
+    @GetMapping("/supplier1/price-list")
+    public Map<Long, BigDecimal> getPriceList(){
+        return carService.getPriceListFromFirstSupplier();
+    }
+
+    @GetMapping("/supplier1/details/{id}")
+    public Car getDetailsById(@PathVariable("id") long id){
+        return carService.getDetailsFromFirstSupplier(id);
+    }
 
 }
