@@ -2,128 +2,56 @@ package com.components.services;
 
 import com.components.dtos.CarDto;
 import com.components.entities.Car;
-import com.components.exceptions.CarNotFoundException;
-import com.components.repositories.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @Service
-public class CarService {
+public class CarService implements Supplier {
 
-    @Value("${url.supplier1}")
-    private String backPrefixForFirstSupplier;
-
-    @Value("${url.supplier2}")
-    private String backPrefixForSecondSupplier;
-
-    private CarRepository carRepository;
+    private Supplier databaseSupplierService;
+    private Supplier firstSupplierService;
+    private Supplier secondSupplierService;
 
     @Autowired
-    public CarService(CarRepository carRepository){
-        this.carRepository = carRepository;
+    public CarService(Supplier databaseSupplierService,
+                      Supplier firstSupplierService,
+                      Supplier secondSupplierService) {
+        this.databaseSupplierService = databaseSupplierService;
+        this.firstSupplierService = firstSupplierService;
+        this.secondSupplierService = secondSupplierService;
+
     }
 
-    public List<Car> getAll(){
-        return carRepository.findAll();
+    public List<Car> findAll() {
+        return databaseSupplierService.findAll();
     }
 
     public Car findById(long id) {
-        return carRepository.findById(id).orElseThrow(CarNotFoundException::new);
+        return databaseSupplierService.findById(id);
     }
 
-    public void deleteById(long id){
-        carRepository.deleteById(id);
+    public void deleteById(long id) {
+        databaseSupplierService.deleteById(id);
     }
 
     public Car updateById(long id, CarDto carDto) {
-        Car carToUpdate = carRepository.findById(id).orElseThrow(CarNotFoundException::new);
-        updateCar(carToUpdate, carDto);
-        carRepository.save(carToUpdate);
-        return carToUpdate;
+        return databaseSupplierService.updateById(id, carDto);
     }
 
-    public Car addCar(Car car) {
-        carRepository.save(car);
-        return car;
+    public Car create(Car car) {
+        return databaseSupplierService.create(car);
     }
 
-    private void updateCar(Car carToUpdate, CarDto carDto){
-        if(Objects.nonNull(carDto.getBrand()))
-            carToUpdate.setBrand(carDto.getBrand());
+    public List<Car> findByQuery(String query) {
+        List<Car> resultList = new ArrayList<>();
 
-        if(Objects.nonNull(carDto.getColor()))
-            carToUpdate.setColor(carDto.getColor());
+        resultList.addAll(databaseSupplierService.findByQuery(query));
+        resultList.addAll(firstSupplierService.findByQuery(query));
+        resultList.addAll(secondSupplierService.findByQuery(query));
 
-        if(Objects.nonNull(carDto.getDriveLayout()))
-            carToUpdate.setDriveLayout(carDto.getDriveLayout());
-
-        if(Objects.nonNull(carDto.getTransmission()))
-            carToUpdate.setTransmission(carDto.getTransmission());
-
-        if(Objects.nonNull(carDto.getEngine()))
-            carToUpdate.setEngine(carDto.getEngine());
-
-        if(Objects.nonNull(carDto.getEngineCapacity()))
-            carToUpdate.setEngineCapacity(carDto.getEngineCapacity());
-
-        if(Objects.nonNull(carDto.getModel()))
-            carToUpdate.setModel(carDto.getModel());
-
-        if(Objects.nonNull(carDto.getPrice()))
-            carToUpdate.setPrice(carDto.getPrice());
-    }
-
-    public Map<Long, BigDecimal> getPriceListFromFirstSupplier(){
-        RestTemplate restTemplate = new RestTemplate();
-        try {
-            ResponseEntity<Map<Long, BigDecimal>> answer = restTemplate.exchange(
-                    backPrefixForFirstSupplier +
-                            "/price-list",
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<Map<Long, BigDecimal>>() {
-                    });
-            return answer.getBody();
-        } catch (Exception e){}
-
-        return new HashMap<>();
-    }
-
-    public Car getDetailsFromFirstSupplier(long id){
-        RestTemplate restTemplate = new RestTemplate();
-        try {
-            ResponseEntity<Car> answer = restTemplate.getForEntity(backPrefixForFirstSupplier +
-                    "/details/" + id, Car.class);
-            return answer.getBody();
-        } catch (Exception e){
-
-        }
-        return new Car();
-    }
-
-    public List<Car> getCarFromSecondSupplier(String query){
-        RestTemplate restTemplate = new RestTemplate();
-        try {
-            ResponseEntity<List<Car>> answer = restTemplate.exchange(
-                    backPrefixForSecondSupplier +
-                            "/by_query?query=" + query,
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<List<Car>>() {
-                    });
-            return answer.getBody();
-        } catch (Exception e){
-
-        }
-        return new ArrayList<>();
+        return resultList;
     }
 
 }
