@@ -1,6 +1,7 @@
 package com.components.services.impl;
 
 import com.components.dtos.CarDto;
+import com.components.dtos.FirstSupplierCarDto;
 import com.components.entities.Car;
 import com.components.services.Supplier;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,6 +57,9 @@ public class FirstSupplierService implements Supplier {
         return priceList.keySet()
                 .stream()
                 .map(this::getDetailsFromFirstSupplier)
+                .map(this::unify)
+                .filter(e -> e.getBrand().equals(query) ||
+                        e.getModel().equals(query))
                 .collect(Collectors.toList());
     }
 
@@ -63,17 +68,17 @@ public class FirstSupplierService implements Supplier {
 
     }
 
-    private Car getDetailsFromFirstSupplier(long id) {
+    private FirstSupplierCarDto getDetailsFromFirstSupplier(long id) {
         RestTemplate restTemplate = new RestTemplate();
         try {
-            ResponseEntity<Car> answer = restTemplate
+            ResponseEntity<FirstSupplierCarDto> answer = restTemplate
                     .getForEntity(backPrefix +
-                            "/details/" + id, Car.class);
+                            "/details/" + id, FirstSupplierCarDto.class);
             return answer.getBody();
         } catch (Exception e) {
 
         }
-        return new Car();
+        return new FirstSupplierCarDto();
     }
 
     private Map<Long, BigDecimal> getPriceListFromFirstSupplier() {
@@ -92,6 +97,34 @@ public class FirstSupplierService implements Supplier {
         }
 
         return new HashMap<>();
+    }
+
+    private Car unify(FirstSupplierCarDto firstSupplierCarDto) {
+
+        Car unifiedCar = new Car();
+
+        if (Objects.nonNull(firstSupplierCarDto.getBrand()))
+            unifiedCar.setBrand(firstSupplierCarDto.getBrand());
+
+        if (Objects.nonNull(firstSupplierCarDto.getColor()))
+            unifiedCar.setColor(firstSupplierCarDto.getColor());
+
+        if (Objects.nonNull(firstSupplierCarDto.getDriveLayout()))
+            unifiedCar.setDriveLayout(firstSupplierCarDto.getDriveLayout());
+
+        if (Objects.nonNull(firstSupplierCarDto.getTransmission()))
+            unifiedCar.setTransmission(firstSupplierCarDto.getTransmission());
+
+        if (Objects.nonNull(firstSupplierCarDto.getEngine()))
+            unifiedCar.setEngine(firstSupplierCarDto.getEngine());
+
+        if (Objects.nonNull(firstSupplierCarDto.getModel()))
+            unifiedCar.setModel(firstSupplierCarDto.getModel());
+
+        if (Objects.nonNull(firstSupplierCarDto.getPrice()))
+            unifiedCar.setPrice(firstSupplierCarDto.getPrice());
+
+        return unifiedCar;
     }
 
 }

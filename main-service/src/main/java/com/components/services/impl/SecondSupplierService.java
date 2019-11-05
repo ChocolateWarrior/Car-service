@@ -1,6 +1,7 @@
 package com.components.services.impl;
 
 import com.components.dtos.CarDto;
+import com.components.dtos.SecondSupplierCarDto;
 import com.components.entities.Car;
 import com.components.services.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class SecondSupplierService implements Supplier {
@@ -49,15 +52,25 @@ public class SecondSupplierService implements Supplier {
     }
 
     @Override
-    public List<Car> findByQuery(String query) {
+    public List<Car> findByQuery(String query){
+        return getSecondSupplierList(query).stream()
+                .map(this::unify)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteById(long id) {
+    }
+
+    private List<SecondSupplierCarDto> getSecondSupplierList(String query) {
         try {
-            ResponseEntity<List<Car>> answer = restTemplate
+            ResponseEntity<List<SecondSupplierCarDto>> answer = restTemplate
                     .exchange(
                             backPrefix +
                                     "/by_query?query=" + query,
                             HttpMethod.GET,
                             null,
-                            new ParameterizedTypeReference<List<Car>>() {
+                            new ParameterizedTypeReference<List<SecondSupplierCarDto>>() {
                             });
             return answer.getBody();
         } catch (Exception e) {
@@ -66,8 +79,26 @@ public class SecondSupplierService implements Supplier {
         return new ArrayList<>();
     }
 
-    @Override
-    public void deleteById(long id) {
+    private Car unify(SecondSupplierCarDto secondSupplierCarDto) {
+
+        Car unifiedCar = new Car();
+
+        if (Objects.nonNull(secondSupplierCarDto.getBrand()))
+            unifiedCar.setBrand(secondSupplierCarDto.getBrand());
+
+        if (Objects.nonNull(secondSupplierCarDto.getColor()))
+            unifiedCar.setColor(secondSupplierCarDto.getColor());
+
+        if (Objects.nonNull(secondSupplierCarDto.getTransmission()))
+            unifiedCar.setTransmission(secondSupplierCarDto.getTransmission());
+
+        if (Objects.nonNull(secondSupplierCarDto.getModel()))
+            unifiedCar.setModel(secondSupplierCarDto.getModel());
+
+        if (Objects.nonNull(secondSupplierCarDto.getPrice()))
+            unifiedCar.setPrice(secondSupplierCarDto.getPrice());
+
+        return unifiedCar;
     }
 
 }
