@@ -19,14 +19,23 @@ public class CarService {
     }
 
     public List<Car> getAllProducts() {
+        delayResponse(16);
         return carRepository.findAll();
     }
 
     public List<Car> getAllProductsByQuery(String query) {
+        delayResponse(15);
         return carRepository.findAllByBrandOrModelContains(query, query);
     }
     private List<Car> findAll(){return carRepository.findAll();}
 
+    private void delayResponse(int seconds){
+        try {
+            Thread.sleep(seconds*1000);
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
 
     @PostConstruct
     private void generateDB() {
