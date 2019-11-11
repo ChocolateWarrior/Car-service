@@ -16,8 +16,7 @@ import java.math.BigDecimal;
 public class Car {
 
     @Id
-    @SequenceGenerator(name="seq_car", allocationSize = 0, sequenceName = "sequence_car_id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_car")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
     private long id;
 
@@ -40,8 +39,10 @@ public class Car {
     private BigDecimal price;
 
     @Column(name = "transmission", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Transmission transmission;
 
     @Column(name = "drive_layout", nullable = false)
+    @Enumerated(EnumType.STRING)
     private DriveLayout driveLayout;
 }

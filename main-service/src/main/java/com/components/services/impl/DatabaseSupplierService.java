@@ -3,10 +3,12 @@ package com.components.services.impl;
 import com.components.dtos.CarDto;
 import com.components.entities.Car;
 import com.components.exceptions.CarNotFoundException;
+import com.components.generators.DatabaseRandomGenerator;
 import com.components.repositories.CarRepository;
 import com.components.services.Supplier;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,9 +16,11 @@ import java.util.Objects;
 public class DatabaseSupplierService implements Supplier {
 
     private CarRepository carRepository;
+    private DatabaseRandomGenerator databaseRandomGenerator;
 
-    public DatabaseSupplierService(CarRepository carRepository) {
+    public DatabaseSupplierService(CarRepository carRepository, DatabaseRandomGenerator databaseRandomGenerator) {
         this.carRepository = carRepository;
+        this.databaseRandomGenerator = databaseRandomGenerator;
     }
 
     @Override
@@ -76,6 +80,13 @@ public class DatabaseSupplierService implements Supplier {
 
         if (Objects.nonNull(carDto.getPrice()))
             carToUpdate.setPrice(carDto.getPrice());
+    }
+
+    @PostConstruct
+    private void generateDB(){
+        if(findAll().isEmpty()) {
+            databaseRandomGenerator.generateCarMainDBRecords(100);
+        }
     }
 
 }

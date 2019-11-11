@@ -1,17 +1,21 @@
 package com.components.services;
 
 import com.components.entities.Car;
+import com.components.generators.DatabaseRandomGenerator;
 import com.components.repositories.CarRepository;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
 public class CarService {
     private CarRepository carRepository;
+    private DatabaseRandomGenerator databaseRandomGenerator;
 
-    public CarService(CarRepository carRepository) {
+    public CarService(CarRepository carRepository, DatabaseRandomGenerator databaseRandomGenerator) {
         this.carRepository = carRepository;
+        this.databaseRandomGenerator = databaseRandomGenerator;
     }
 
     public List<Car> getAllProducts() {
@@ -20,5 +24,14 @@ public class CarService {
 
     public List<Car> getAllProductsByQuery(String query) {
         return carRepository.findAllByBrandOrModelContains(query, query);
+    }
+    private List<Car> findAll(){return carRepository.findAll();}
+
+
+    @PostConstruct
+    private void generateDB() {
+        if (findAll().isEmpty()) {
+            databaseRandomGenerator.generateCarMainDBRecords(10);
+        }
     }
 }
