@@ -6,9 +6,12 @@ import com.components.entities.Car;
 import com.components.services.Supplier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -52,6 +55,7 @@ public class FirstSupplierService implements Supplier {
     }
 
     @Override
+//    @Cacheable(value = "firstSupplier", key = "#query.trim()")
     public List<Car> findByQuery(String query) {
         Map<Long, BigDecimal> priceList = getPriceListFromFirstSupplier();
         return priceList.keySet()
@@ -126,5 +130,9 @@ public class FirstSupplierService implements Supplier {
 
         return unifiedCar;
     }
-
+//
+//    @Scheduled(cron = "0 0 12 * * *")
+//    @CacheEvict(value = "firstSupplier", allEntries = true)
+//    public void resetCache() {
+//    }
 }

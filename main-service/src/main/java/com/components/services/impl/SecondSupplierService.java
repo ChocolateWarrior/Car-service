@@ -7,9 +7,12 @@ import com.components.services.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -52,6 +55,8 @@ public class SecondSupplierService implements Supplier {
     }
 
     @Override
+//    @Cacheable(value = "secondSupplier", key = "#query.trim()")
+
     public List<Car> findByQuery(String query){
         return getSecondSupplierList(query).stream()
                 .map(this::unify)
@@ -100,5 +105,10 @@ public class SecondSupplierService implements Supplier {
 
         return unifiedCar;
     }
+
+//    @Scheduled(cron = "0 0 12 * * *")
+//    @CacheEvict(value = "secondSupplier", allEntries = true)
+//    public void resetCache() {
+//    }
 
 }
