@@ -43,8 +43,6 @@ public class DatabaseRandomGenerator {
     }
 
     public void generateCarMainDBRecords(int recordsAmount) {
-        .out.println(driveLayouts);
-        .out.println(transmissions);
         for (int i = 0; i < recordsAmount; i++) {
             Car check = Car
                     .builder()

@@ -3,6 +3,8 @@ package com.components.services;
 import com.components.dtos.CarDto;
 import com.components.entities.Car;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -52,6 +54,13 @@ public class CarService implements Supplier {
         resultList.addAll(secondSupplierService.findByQuery(query));
 
         return resultList;
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void handleContextRefreshEvent() {
+        System.out.println("Before cashing");
+        List<Car> result = findByQuery("BMW");
+        System.out.println("After cashing: " + result.size());
     }
 
 }

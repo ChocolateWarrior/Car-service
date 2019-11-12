@@ -89,9 +89,9 @@ public class DatabaseSupplierService implements Supplier {
     }
 
     @PostConstruct
-    private void generateDB(){
-        if(findAll().isEmpty()) {
-            databaseRandomGenerator.generateCarMainDBRecords(100);
+    private void generateDB() {
+        if (findAll().isEmpty()) {
+            databaseRandomGenerator.generateCarMainDBRecords(100000);
         }
     }
 
