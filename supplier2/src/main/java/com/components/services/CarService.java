@@ -19,7 +19,6 @@ public class CarService {
     }
 
     public List<Car> getAllProducts() {
-        delayResponse(16);
         return carRepository.findAll();
     }
 

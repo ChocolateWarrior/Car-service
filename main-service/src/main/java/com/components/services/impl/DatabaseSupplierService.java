@@ -31,7 +31,7 @@ public class DatabaseSupplierService implements Supplier {
     }
 
     @Override
-//    @CachePut(value = "main", key = "#id")
+    @CachePut(value = "main", key = "#id")
     public Car updateById(long id, CarDto carDto) {
         Car carToUpdate = carRepository.findById(id).orElseThrow(CarNotFoundException::new);
         updateCar(carToUpdate, carDto);
@@ -40,13 +40,13 @@ public class DatabaseSupplierService implements Supplier {
     }
 
     @Override
-//    @Cacheable(value = "main", key = "#id")
+    @Cacheable(value = "main", key = "#id")
     public Car findById(long id) {
         return carRepository.findById(id).orElseThrow(CarNotFoundException::new);
     }
 
     @Override
-//    @Cacheable(value = "main")
+    @Cacheable(value = "main")
     public List<Car> findAll() {
         return carRepository.findAll();
     }
@@ -57,7 +57,7 @@ public class DatabaseSupplierService implements Supplier {
     }
 
     @Override
-//    @Cacheable(value = "main", key = "#query.trim()")
+    @Cacheable(value = "main", key = "#query.trim()")
     public List<Car> findByQuery(String query) {
         return carRepository.findAllByBrandOrModelContains(query, query);
     }

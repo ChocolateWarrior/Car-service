@@ -41,7 +41,7 @@ public class CarService {
     @PostConstruct
     private void generateDB() {
         if (findAll().isEmpty()) {
-            databaseRandomGenerator.generateCarMainDBRecords(50);
+            databaseRandomGenerator.generateCarMainDBRecords(50000);
         }
     }
 

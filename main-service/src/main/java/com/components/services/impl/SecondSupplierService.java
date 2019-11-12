@@ -55,7 +55,7 @@ public class SecondSupplierService implements Supplier {
     }
 
     @Override
-//    @Cacheable(value = "secondSupplier", key = "#query.trim()")
+    @Cacheable(value = "secondSupplier", key = "#query.trim()")
 
     public List<Car> findByQuery(String query){
         return getSecondSupplierList(query).stream()
@@ -106,9 +106,9 @@ public class SecondSupplierService implements Supplier {
         return unifiedCar;
     }
 
-//    @Scheduled(cron = "0 0 12 * * *")
-//    @CacheEvict(value = "secondSupplier", allEntries = true)
-//    public void resetCache() {
-//    }
+    @Scheduled(cron = "0 0 12 * * *")
+    @CacheEvict(value = "secondSupplier", allEntries = true)
+    public void resetCache() {
+    }
 
 }

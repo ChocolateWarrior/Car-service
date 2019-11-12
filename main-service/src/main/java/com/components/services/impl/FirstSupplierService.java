@@ -55,7 +55,7 @@ public class FirstSupplierService implements Supplier {
     }
 
     @Override
-//    @Cacheable(value = "firstSupplier", key = "#query.trim()")
+    @Cacheable(value = "firstSupplier", key = "#query.trim()")
     public List<Car> findByQuery(String query) {
         Map<Long, BigDecimal> priceList = getPriceListFromFirstSupplier();
         return priceList.keySet()
@@ -130,9 +130,9 @@ public class FirstSupplierService implements Supplier {
 
         return unifiedCar;
     }
-//
-//    @Scheduled(cron = "0 0 12 * * *")
-//    @CacheEvict(value = "firstSupplier", allEntries = true)
-//    public void resetCache() {
-//    }
+
+    @Scheduled(cron = "0 0 12 * * *")
+    @CacheEvict(value = "firstSupplier", allEntries = true)
+    public void resetCache() {
+    }
 }

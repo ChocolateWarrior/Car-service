@@ -51,8 +51,6 @@ public class CarService implements Supplier {
         resultList.addAll(firstSupplierService.findByQuery(query));
         resultList.addAll(secondSupplierService.findByQuery(query));
 
-        resultList.forEach(System.out::println);
-
         return resultList;
     }
 

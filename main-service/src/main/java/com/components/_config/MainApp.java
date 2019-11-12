@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication(scanBasePackages = "com.components.*")
-//@EnableCaching
+@EnableCaching
 public class MainApp {
     public static void main( String[] args ) {
         SpringApplication.run(MainApp.class, args);
