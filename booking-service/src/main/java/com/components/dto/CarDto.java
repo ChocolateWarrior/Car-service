@@ -2,12 +2,14 @@ package com.components.dto;
 
 import com.components.entities.DriveLayout;
 import com.components.entities.Transmission;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class CarDto {
 
