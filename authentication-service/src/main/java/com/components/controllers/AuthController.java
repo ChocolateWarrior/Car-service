@@ -3,6 +3,7 @@ package com.components.controllers;
 import com.components.dto.UserDTO;
 import com.components.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +23,8 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public boolean authenticate(@RequestParam String username,
-                                @RequestParam String password) {
-        return userService.logIn(username, password);
+    public UserDetails authenticate(@RequestParam String username) {
+        return userService.loadUserByUsername(username);
     }
 
     @PostMapping("/register")
