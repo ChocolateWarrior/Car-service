@@ -6,20 +6,23 @@ import com.components.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class UserService {
 
     private UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
 
-    public boolean isUserRegistered(String username) {
+    public boolean logIn(String username, String password) {
+        User user = userRepository.findByUsername(username).orElseThrow(RuntimeException::new);
+        return user.getPassword().equals(password);
+    }
+
+    private boolean isUserRegistered(String username) {
         return userRepository.findByUsername(username).isPresent();
     }
 
