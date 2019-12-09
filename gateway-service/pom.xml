@@ -2,17 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <artifactId>car-dealership</artifactId>
         <groupId>com.components</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.components</groupId>
-    <artifactId>supplier1</artifactId>
+    <artifactId>gateway-service</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>supplier1</name>
+    <name>main-service</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
@@ -111,4 +111,5 @@
             </plugin>
         </plugins>
     </build>
+    
 </project>
