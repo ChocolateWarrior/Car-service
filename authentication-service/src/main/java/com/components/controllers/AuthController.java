@@ -28,8 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public boolean register(@RequestParam String username,
-                            @RequestParam String password) {
-        return userService.saveNewUser(new UserDTO(username, password));
+    public boolean register(UserDTO userDTO) {
+        return userService.saveNewUser(userDTO);
     }
 }
