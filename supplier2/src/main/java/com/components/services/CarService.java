@@ -23,7 +23,7 @@ public class CarService {
     }
 
     public List<Car> getAllProductsByQuery(String query) {
-        delayResponse(15);
+//        delayResponse(15);
         return carRepository.findAllByBrandOrModelContains(query, query);
     }
     private List<Car> findAll(){return carRepository.findAll();}
