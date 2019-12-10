@@ -19,6 +19,7 @@ public class UserService implements UserDetailsService {
     private String authServiceBackPrefix;
     private RestTemplate restTemplate;
 
+    //url.auth-service=http://localhost:8094/auth
     @Autowired
     public UserService(@Value("${url.auth-service}") String authServiceBackPrefix,
                        RestTemplateBuilder restTemplateBuilder) {
@@ -32,10 +33,12 @@ public class UserService implements UserDetailsService {
         try {
             ResponseEntity<UserDetails> answer = restTemplate
                     .getForEntity(authServiceBackPrefix +
-                            "?username=" + username, UserDetails.class);
+                            "/username?username=" + username, UserDetails.class);
             return answer.getBody();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
+}

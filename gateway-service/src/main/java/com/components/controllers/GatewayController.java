@@ -34,8 +34,9 @@ public class GatewayController {
     }
 
     @PostMapping
-    public boolean book(@RequestBody CarDto carDto){
-        return gatewayService.book(carDto);
+    public boolean book(@RequestParam long id){
+        System.out.println("now in book method of gateway service");
+        return gatewayService.book(id);
     }
 
 }

@@ -38,6 +38,7 @@ public class CarController {
 
     @GetMapping("/{id}")
     public Car getById(@PathVariable("id") long id) {
+        System.out.println("now in getByID method of main service");
         return carService.findById(id);
     }
 
