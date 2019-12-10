@@ -22,6 +22,11 @@ public class AuthController {
         this.userService = userService;
     }
 
+    @GetMapping("/username")
+    public UserDetails getByUsername(@RequestParam String username){
+        return userService.loadUserByUsername(username);
+    }
+
     @GetMapping("/login")
     public UserDetails authenticate(@RequestParam String username) {
         return userService.loadUserByUsername(username);
