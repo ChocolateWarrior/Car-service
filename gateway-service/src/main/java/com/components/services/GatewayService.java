@@ -87,7 +87,7 @@ public class GatewayService {
         try {
             ResponseEntity<List<Car>> answer = restTemplate
                     .exchange(
-                            mainServiceBackPrefix + "/all",
+                            mainServiceBackPrefix + "/",
                             HttpMethod.GET,
                             null,
                             new ParameterizedTypeReference<List<Car>>() {});
@@ -95,6 +95,7 @@ public class GatewayService {
         } catch (Exception e) {
 
         }
+
         return new ArrayList<>();
 
     }

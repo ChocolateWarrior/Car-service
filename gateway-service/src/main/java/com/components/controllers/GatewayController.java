@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/gateway")
+@RequestMapping("/api")
 public class GatewayController {
 
     private GatewayService gatewayService;
@@ -28,14 +28,13 @@ public class GatewayController {
         return gatewayService.getAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/cars/{id}")
     public Car getById(@PathVariable("id") long id) {
         return gatewayService.getById(id);
     }
 
-    @PostMapping
-    public boolean book(@RequestParam long id){
-        System.out.println("now in book method of gateway service");
+    @PostMapping("/book/{id}")
+    public boolean book(@PathVariable("id") long id){
         return gatewayService.book(id);
     }
 

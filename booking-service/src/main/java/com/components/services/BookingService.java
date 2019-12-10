@@ -46,9 +46,6 @@ public class BookingService {
     }
 
     public boolean book(CarDto carDto) {
-        System.out.println("Car is booked:" + isCarBooked(carDto.getId()));
-        System.out.println("Car is present:" + isCarPresentInMainService(carDto.getId()));
-        System.out.println(carDto);
         if (isCarBooked(carDto.getId())) {
             return false;
         }
