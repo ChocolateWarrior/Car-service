@@ -1,6 +1,7 @@
 package com.components.services;
 
 import com.components.dto.CarDto;
+import com.components.dto.UserDTO;
 import com.components.entities.Car;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,10 @@ public class GatewayService {
         this.bookingServiceBackPrefix = bookingServiceBackPrefix;
         this.mainServiceBackPrefix = mainServiceBackPrefix;
         this.restTemplate= restTemplateBuilder.build();
+    }
+
+    public boolean register(UserDTO userDTO){
+
     }
 
     public boolean book(CarDto carDto) {

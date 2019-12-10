@@ -1,6 +1,7 @@
 package com.components.controllers;
 
 import com.components.dto.CarDto;
+import com.components.dto.UserDTO;
 import com.components.entities.Car;
 import com.components.services.GatewayService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class GatewayController {
     public GatewayController(GatewayService gatewayService) {
         this.gatewayService = gatewayService;
     }
+
+    @PostMapping("/register")
+    public boolean register(@RequestBody UserDTO userDTO){return  gatewayService.register(userDTO);}
 
     @GetMapping("/cars")
     public List<Car> getAll (){
