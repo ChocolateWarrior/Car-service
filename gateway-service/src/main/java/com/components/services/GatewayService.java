@@ -21,12 +21,14 @@ public class GatewayService {
 
     private String bookingServiceBackPrefix;
     private String mainServiceBackPrefix;
+    private String authServiceBackPrefix;
     private RestTemplate restTemplate;
     private HttpHeaders headers;
 
     @Autowired
     public GatewayService(@Value("${url.booking-service}") String bookingServiceBackPrefix,
                           @Value("${url.main-service}") String mainServiceBackPrefix,
+                          @Value("${url.auth-service}") String authServiceBackPrefix,
                           RestTemplateBuilder restTemplateBuilder) {
         this.bookingServiceBackPrefix = bookingServiceBackPrefix;
         this.mainServiceBackPrefix = mainServiceBackPrefix;
@@ -34,7 +36,18 @@ public class GatewayService {
     }
 
     public boolean register(UserDTO userDTO){
+        headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        JSONObject userJsonObject = new JSONObject();
+        userJsonObject.put("username", userDTO.getUsername());
+        userJsonObject.put("password", userDTO.getPassword());
+        HttpEntity<String> request =
+                new HttpEntity<String>(userJsonObject.toString(), headers);
 
+        ResponseEntity<String> responseEntityStr = restTemplate.
+                postForEntity(bookingServiceBackPrefix, request, String.class);
+
+        return Boolean.getBoolean(responseEntityStr.toString());
     }
 
     public boolean book(CarDto carDto) {
