@@ -2,12 +2,14 @@ package com.components.dto;
 
 import com.components.entities.DriveLayout;
 import com.components.entities.Transmission;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Builder
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

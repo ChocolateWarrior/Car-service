@@ -21,6 +21,7 @@ public class BookingController {
 
     @PostMapping(value = "/book", consumes = "application/json", produces = "application/json")
     public boolean book(@RequestBody CarDto carDto){
+        System.out.println("now in book method of booking service");
         return bookingService.book(carDto);
     }
 }

@@ -18,6 +18,7 @@ public class BookingService {
     private String backPrefix;
     private RestTemplate restTemplate;
 
+//  url.main-service = http://localhost:8090/cars
     @Autowired
     public BookingService(CarRepository carRepository,
                           @Value("${url.main-service}") String backPrefix,
@@ -35,7 +36,7 @@ public class BookingService {
 
         try {
             ResponseEntity<CarDto> answer = restTemplate
-                    .getForEntity(backPrefix + id, CarDto.class);
+                    .getForEntity(backPrefix + "/" + id, CarDto.class);
             return answer.getBody() != null;
         } catch (Exception e){
             e.printStackTrace();

@@ -25,11 +25,16 @@ public class GatewayService {
     private RestTemplate restTemplate;
     private HttpHeaders headers;
 
+
+//    url.auth-service = http://localhost:8094/auth
+//    url.booking-service = http://localhost:8093/booking
+//    url.main-sevice = http://localhost:8090/cars
     @Autowired
     public GatewayService(@Value("${url.booking-service}") String bookingServiceBackPrefix,
                           @Value("${url.main-service}") String mainServiceBackPrefix,
                           @Value("${url.auth-service}") String authServiceBackPrefix,
                           RestTemplateBuilder restTemplateBuilder) {
+        this.authServiceBackPrefix = authServiceBackPrefix;
         this.bookingServiceBackPrefix = bookingServiceBackPrefix;
         this.mainServiceBackPrefix = mainServiceBackPrefix;
         this.restTemplate= restTemplateBuilder.build();
@@ -45,31 +50,34 @@ public class GatewayService {
                 new HttpEntity<String>(userJsonObject.toString(), headers);
 
         ResponseEntity<String> responseEntityStr = restTemplate.
-                postForEntity(bookingServiceBackPrefix, request, String.class);
+                postForEntity(authServiceBackPrefix + "/register",
+                        request,
+                        String.class);
 
         return Boolean.getBoolean(responseEntityStr.toString());
     }
 
-    public boolean book(CarDto carDto) {
+    public boolean book(long id) {
 
+        Car car = getById(id);
         headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         JSONObject carJsonObject = new JSONObject();
-        carJsonObject.put("id", carDto.getId());
-        carJsonObject.put("brand", carDto.getBrand());
-        carJsonObject.put("model", carDto.getModel());
-        carJsonObject.put("color", carDto.getColor());
-        carJsonObject.put("engine", carDto.getEngine());
-        carJsonObject.put("engineCapacity", carDto.getEngineCapacity());
-        carJsonObject.put("price", carDto.getPrice());
-        carJsonObject.put("transmission", carDto.getTransmission());
-        carJsonObject.put("driveLayout", carDto.getDriveLayout());
+        carJsonObject.put("id", car.getId());
+        carJsonObject.put("brand", car.getBrand());
+        carJsonObject.put("model", car.getModel());
+        carJsonObject.put("color", car.getColor());
+        carJsonObject.put("engine", car.getEngine());
+        carJsonObject.put("engineCapacity", car.getEngineCapacity());
+        carJsonObject.put("price", car.getPrice());
+        carJsonObject.put("transmission", car.getTransmission());
+        carJsonObject.put("driveLayout", car.getDriveLayout());
 
         HttpEntity<String> request =
                 new HttpEntity<String>(carJsonObject.toString(), headers);
 
         ResponseEntity<String> responseEntityStr = restTemplate.
-                postForEntity(bookingServiceBackPrefix, request, String.class);
+                postForEntity(bookingServiceBackPrefix + "/book", request, String.class);
 
         return Boolean.getBoolean(responseEntityStr.toString());
     }
@@ -79,7 +87,7 @@ public class GatewayService {
         try {
             ResponseEntity<List<Car>> answer = restTemplate
                     .exchange(
-                            mainServiceBackPrefix,
+                            mainServiceBackPrefix + "/",
                             HttpMethod.GET,
                             null,
                             new ParameterizedTypeReference<List<Car>>() {});
@@ -87,10 +95,10 @@ public class GatewayService {
         } catch (Exception e) {
 
         }
+
         return new ArrayList<>();
 
     }
-
 
     public Car getById(long id) {
         try {
