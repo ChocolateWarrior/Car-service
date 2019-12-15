@@ -2,7 +2,6 @@ package com.components.controllers;
 
 import com.components.dtos.CarDto;
 import com.components.entities.Car;
-import com.components.services.CarService;
 import com.components.services.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cars")
+@RequestMapping("/")
 public class CarController {
 
     @Value("${url.supplier1}")
@@ -25,7 +24,6 @@ public class CarController {
     public CarController(Supplier carService) {
         this.carService = carService;
     }
-
     @PostMapping
     public Car saveCar(@RequestBody Car car) {
         return carService.create(car);
