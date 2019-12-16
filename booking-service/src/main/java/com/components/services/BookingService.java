@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Objects;
+
 
 @Service
 public class BookingService {
@@ -31,41 +33,44 @@ public class BookingService {
         return carRepository.findById(id).isPresent();
     }
 
-    private boolean isCarPresentInMainService(Long id){
+    private CarDto getCarFromMainService(Long id){
 
         try {
             ResponseEntity<CarDto> answer = restTemplate
                     .getForEntity(backPrefix + "/" + id, CarDto.class);
-            return answer.getBody() != null;
+            return answer.getBody();
         } catch (Exception e){
             e.printStackTrace();
         }
-
-        return false;
+        return null;
     }
 
-    public boolean book(CarDto carDto) {
-        if (isCarBooked(carDto.getId())) {
+    public boolean book(long id) {
+
+        CarDto carDto;
+        if (isCarBooked(id)) {
             return false;
         }
-        if (!isCarPresentInMainService(carDto.getId())) {
+        if (getCarFromMainService(id) != null) {
+            carDto = getCarFromMainService(id);
+        } else {
             return false;
         }
+
         Car car = Car
                 .builder()
-                .id(carDto.getId())
-                .brand(carDto.getBrand())
-                .model(carDto.getModel())
-                .color(carDto.getColor())
-                .engine(carDto.getEngine())
-                .engineCapacity(carDto.getEngineCapacity())
-                .price(carDto.getPrice())
-                .transmission(carDto.getTransmission())
-                .driveLayout(carDto.getDriveLayout())
+                .id(Objects.requireNonNull(carDto).getId())
+                .brand(Objects.requireNonNull(carDto).getBrand())
+                .model(Objects.requireNonNull(carDto).getModel())
+                .color(Objects.requireNonNull(carDto).getColor())
+                .engine(Objects.requireNonNull(carDto).getEngine())
+                .engineCapacity(Objects.requireNonNull(carDto).getEngineCapacity())
+                .price(Objects.requireNonNull(carDto).getPrice())
+                .transmission(Objects.requireNonNull(carDto).getTransmission())
+                .driveLayout(Objects.requireNonNull(carDto).getDriveLayout())
                 .build();
         carRepository.save(car);
         return true;
     }
-
 
 }
