@@ -10,7 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -37,7 +40,10 @@ public class BookingService {
 
         try {
             ResponseEntity<CarDto> answer = restTemplate
-                    .getForEntity(backPrefix + "/" + id, CarDto.class);
+                    .getForEntity(
+//                            backPrefix +
+                            "http://localhost:8090" +
+                                    "/" + id, CarDto.class);
             return answer.getBody();
         } catch (Exception e){
             e.printStackTrace();
@@ -73,4 +79,20 @@ public class BookingService {
         return true;
     }
 
+    public List<Car> findMultiple(long count) {
+        return carRepository.findAll()
+                .stream()
+                .limit(count)
+                .collect(Collectors.toList());
+    }
+
+    public Car findById(long id) {
+        return carRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    }
+
+    public Car bookByMutation(long id) {
+        System.out.println("Booking car with id: " + id);
+        book(id);
+        return new Car();
+    }
 }

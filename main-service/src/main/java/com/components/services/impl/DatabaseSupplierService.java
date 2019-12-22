@@ -27,7 +27,7 @@ public class DatabaseSupplierService implements Supplier {
 
     @Override
     public Car create(Car car) {
-        return null;
+        return carRepository.save(car);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class DatabaseSupplierService implements Supplier {
 
     @Override
     public void deleteById(long id) {
-
+        carRepository.deleteById(id);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class DatabaseSupplierService implements Supplier {
     @PostConstruct
     private void generateDB() {
         if (findAll().isEmpty()) {
-            databaseRandomGenerator.generateCarMainDBRecords(100000);
+            databaseRandomGenerator.generateCarMainDBRecords(100);
         }
     }
 

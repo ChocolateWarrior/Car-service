@@ -110,7 +110,6 @@
         <module>supplier1</module>
         <module>supplier2</module>
         <module>booking-service</module>
-        <module>gateway-service</module>
     </modules>
 
 </project>

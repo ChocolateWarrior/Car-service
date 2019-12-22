@@ -1,0 +1,21 @@
+type Car {
+    id: ID!,
+    brand: String,
+    model: String,
+    color: String,
+    engine: String,
+    engineCapacity: Float,
+    price: Float,
+    transmission: String,
+    driveLayout: String
+
+}
+
+type Query {
+    cars(count: Int):[Car]
+    car(id: ID):Car
+}
+
+type Mutation {
+    bookCar(id: String!):Car
+}
