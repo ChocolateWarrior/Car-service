@@ -2,12 +2,14 @@ package com.components.controllers;
 
 import com.components.dtos.CarDto;
 import com.components.entities.Car;
+import com.components.services.CarService;
 import com.components.services.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/")
@@ -24,6 +26,7 @@ public class CarController {
     public CarController(Supplier carService) {
         this.carService = carService;
     }
+
     @PostMapping
     public Car saveCar(@RequestBody Car car) {
         return carService.create(car);
@@ -37,6 +40,11 @@ public class CarController {
     @GetMapping("/{id}")
     public Car getById(@PathVariable("id") long id) {
         return carService.findById(id);
+    }
+
+    @GetMapping
+    public List<Car> getMultiple(@RequestParam("count") long count){
+        return getAllCars("").stream().limit(count).collect(Collectors.toList());
     }
 
     @DeleteMapping("/{id}")

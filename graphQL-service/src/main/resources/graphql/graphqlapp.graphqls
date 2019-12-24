@@ -1,0 +1,35 @@
+type Car {
+    id: ID!,
+    brand: String,
+    model: String,
+    color: String,
+    engine: String,
+    engineCapacity: Float,
+    price: Float,
+    transmission: String,
+    driveLayout: String
+
+}
+
+type User{
+    id: ID!,
+    username: String,
+#    password: String,
+    authorities: String
+}
+
+type  Query {
+    cars(count: Int):[Car]
+    car(id: ID):Car
+    bookings(count: Int):[Car]
+    booking(id: ID):Car
+    users(count: Int):[User]
+    user(id: ID):User
+}
+
+type Mutation {
+    createCar(brand: String!, model: String!, color: String!, engine: String!, engineCapacity: String!, price: String!, transmission: String!, driveLayout: String!):String
+    updateCar(id: String!, brand: String, model: String, color: String, engine: String, engineCapacity: String, price: String, transmission: String, driveLayout: String):String
+    deleteCar(id: String!): String
+    bookCar(id: String!):String
+}

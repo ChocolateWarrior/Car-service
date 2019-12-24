@@ -1,9 +1,12 @@
 package com.components.controllers;
 
 import com.components.dto.CarDto;
+import com.components.entities.Car;
 import com.components.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/")
@@ -20,5 +23,15 @@ public class BookingController {
     public boolean book(@PathVariable("id") long id){
         System.out.println("now in book method of booking service");
         return bookingService.book(id);
+    }
+
+    @GetMapping
+    public List<Car> getBookings(@RequestParam("count") int count){
+        return bookingService.findMultiple(count);
+    }
+
+    @GetMapping({"id"})
+    public Car getCarById(@PathVariable long id){
+        return bookingService.findById(id);
     }
 }

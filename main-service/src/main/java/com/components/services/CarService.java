@@ -70,7 +70,6 @@ public class CarService implements Supplier {
         System.out.println("After cashing: " + result.size());
     }
 
-    @Transactional(readOnly = true)
     public List<Car> findMultiple(long count) {
         return this.findByQuery("")
                 .stream()
